@@ -5,7 +5,8 @@ from reportlab.lib import colors
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, HRFlowable
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
 
-OUTPUT_FILE = "/mnt/c/Users/SajcS/Desktop/projects summary/Sage_Clokey_GitHub_Portfolio.pdf"
+import os
+OUTPUT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Sage_Clokey_GitHub_Portfolio.pdf")
 
 repos = [
     {

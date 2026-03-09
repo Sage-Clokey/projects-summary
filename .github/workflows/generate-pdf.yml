@@ -1,0 +1,40 @@
+name: Regenerate Portfolio PDF
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'generate_portfolio_pdf.py'  # runs when you update the script
+  schedule:
+    - cron: '0 9 * * 1'  # every Monday at 9am UTC (picks up new repos automatically)
+  workflow_dispatch:       # lets you trigger it manually from GitHub Actions tab
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install reportlab
+
+      - name: Generate PDF
+        run: python generate_portfolio_pdf.py
+
+      - name: Commit updated PDF
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Sage_Clokey_GitHub_Portfolio.pdf
+          git diff --cached --quiet || git commit -m "chore: regenerate portfolio PDF [skip ci]"
+          git push
